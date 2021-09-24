@@ -26,9 +26,8 @@ import PNProvider from '@uz/unitz-providers/PNProvider';
 import { LoadableProvider } from '@uz/components/Loadable';
 import I18nProvider from '@uz/unitz-providers/I18nProvider';
 import TestProvider from '@uz/unitz-providers/TestProvider';
-// import IAPProvider from '@na/components/IAPProvider';
 
-import NSApp from '@uz/unitz-app';
+import NSApp from '@uz/unitz-app-education';
 import ValidateProvider from '@uz/unitz-providers/ValidateProvider';
 import PaymentProvider from '@uz/unitz-providers/PaymentProvider';
 
@@ -36,6 +35,7 @@ import CodePushProvider from '@uz/unitz-providers/CodePushProvider';
 import AlertProvider from '@uz/unitz-providers/AlertProvider';
 import MessageProvider from '@uz/unitz-providers/MessageProvider';
 import AppStripeProvider from '@uz/unitz-providers/AppStripeProvider';
+import AppCalendarProvider from '@uz/unitz-providers/AppCalendarProvider';
 
 import * as Sentry from '@sentry/react-native';
 
@@ -48,10 +48,10 @@ const App = CodePushProvider(
     <Providers
       providers={[
         RefProvider,
+        I18nProvider,
         AppConfigProvider,
         TestProvider,
         ValidateProvider,
-        I18nProvider,
         LoadableProvider,
         AuthProvider,
         PaymentProvider,
@@ -66,6 +66,7 @@ const App = CodePushProvider(
         AlertProvider,
         MessageProvider,
         AppStripeProvider,
+        AppCalendarProvider,
       ]}
     >
       <NSApp />

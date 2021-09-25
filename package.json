@@ -133,6 +133,7 @@
     "graphql-tag": "^2.1.0",
     "i18n-js": "^3.8.0",
     "import-all.macro": "^3.1.0",
+    "later": "^1.2.0",
     "lodash": "^4.17.11",
     "moment": "^2.29.1",
     "opentok-react-native": "^0.15.0",

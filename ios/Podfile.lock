@@ -739,6 +739,11 @@ PODS:
   - react-native-twilio-video-webrtc (2.0.0):
     - React
     - TwilioVideo (~> 4.1)
+  - react-native-video (5.1.1):
+    - React-Core
+    - react-native-video/Video (= 5.1.1)
+  - react-native-video/Video (5.1.1):
+    - React-Core
   - react-native-vnpay-merchant (1.0.0):
     - React
   - react-native-webview (10.9.2):
@@ -988,6 +993,7 @@ DEPENDENCIES:
   - react-native-keep-awake (from `../node_modules/react-native-keep-awake`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-twilio-video-webrtc (from `../node_modules/react-native-twilio-video-webrtc`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - react-native-vnpay-merchant (from `../node_modules/react-native-vnpay-merchant`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -1197,6 +1203,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-twilio-video-webrtc:
     :path: "../node_modules/react-native-twilio-video-webrtc"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   react-native-vnpay-merchant:
     :path: "../node_modules/react-native-vnpay-merchant"
   react-native-webview:
@@ -1402,6 +1410,7 @@ SPEC CHECKSUMS:
   react-native-keep-awake: 41bae558a47103a9ca06d9a35f15bab88207d7db
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-twilio-video-webrtc: 5b40ee0129687cb89fb5055680aed35c8db4be07
+  react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
   react-native-vnpay-merchant: c9f1ebb375802c7004045e3646240f043acaaf61
   react-native-webview: 4e96d493f9f90ba4f03b28933f30b2964df07e39
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336

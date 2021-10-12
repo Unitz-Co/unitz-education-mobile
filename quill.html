@@ -1007,6 +1007,27 @@
       background-color: rgba(29, 28, 29, 0.04);
     }
 
+    /* #toolbar {
+      display: flex;
+      flex-direction: row;
+    } */
+    .quill-wrap {
+      max-width:900px;
+      width:100%
+    }
+    .info {
+      text-align:center;
+      margin-top:20px;
+    }
+    .quill-wrap .ql-active {
+      border: 1px solid #ccc !important;
+      border-radius:4px;
+    }
+    .quill-wrap button, .quill-wrap .ql-picker {
+      margin-right:2px
+    }
+
+
 
   </style>
   <script>
@@ -1024,13 +1045,32 @@
          *
          * @param {Quill} quill - The Quill Editor instance that this tool should get added to.
          */
-        attach(quill) {
+        attach(quill, pos = -1, block = false) {
             const me = this
             me.quill = quill
             me.toolbar = quill.getModule('toolbar')
-            me.toolbarEl = me.toolbar.container
-            me.toolbarEl.appendChild(me.qlFormatsEl)
+            me.toolbarEl = me.toolbar.container;
+            if(block) {
+              me.qlFormatsEl.style = `display: flex;
+                                      flex: 1;
+                                      `
+            }
+            this.insertChildAtIndex(me.qlFormatsEl, pos)
         }
+
+
+        insertChildAtIndex(child, index) {
+          const me = this
+          me.quill = quill
+          me.toolbar = quill.getModule('toolbar')
+          me.toolbarEl = me.toolbar.container
+          if (index < 0) {
+            me.toolbarEl.appendChild(child)
+          } else {
+            me.toolbarEl.insertBefore(child, me.toolbarEl.children[index])
+          }
+        }
+
         /**
          * Detaches this tool from the given Quill Editor instance.
          *
@@ -1235,10 +1275,69 @@
 
         }
     }
+  
+    const createHTMLNode = (htmlStr) => {   
+      const template = document.createElement('template');
+      template.innerHTML = htmlStr.trim();
+      return template.content.firstChild;
+    };
+
+    const parseUnicode = (unicode) => {
+      return String.fromCodePoint(...`${unicode}`.split('-').map((str) => parseInt(str, 16)));
+    };
+
+      
   </script>
 </head>
 
 <bod>
+  <div class="quill-wrap">
+
+  <div id="toolbar">
+    <span class="ql-formats">
+      <button class="ql-shortcut" id="ql-shortcut">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.0001 21H10.0001L11.0001 14H7.50011C6.92011 14 6.93011 13.68 7.12011 13.34C7.31011 13 7.17011 13.26 7.19011 13.22C8.48011 10.94 10.4201 7.54 13.0001 3H14.0001L13.0001 10H16.5001C16.9901 10 17.0601 10.33 16.9701 10.51L16.9001 10.66C12.9601 17.55 11.0001 21 11.0001 21Z" fill="black"/>
+          </svg>
+      </button>
+      <button class="ql-bold"></button>
+      <button class="ql-italic"></button>
+      <button class="ql-underline"></button>
+      <select class="ql-color"></select>
+      <select class="ql-background"></select>
+      <button class="ql-list" value="ordered"></button>
+      <button class="ql-list" value="bullet"></button>
+      <button class="ql-photo" id="ql-photo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M22 16V4C22 2.9 21.1 2 20 2H8C6.9 2 6 2.9 6 4V16C6 17.1 6.9 18 8 18H20C21.1 18 22 17.1 22 16ZM11.4 12.53L13.03 14.71L15.61 11.49C15.81 11.24 16.19 11.24 16.39 11.49L19.35 15.19C19.61 15.52 19.38 16 18.96 16H9C8.59 16 8.35 15.53 8.6 15.2L10.6 12.53C10.8 12.27 11.2 12.27 11.4 12.53ZM2 7V20C2 21.1 2.9 22 4 22H17C17.55 22 18 21.55 18 21C18 20.45 17.55 20 17 20H5C4.45 20 4 19.55 4 19V7C4 6.45 3.55 6 3 6C2.45 6 2 6.45 2 7Z" fill="#000000"/>
+          </svg>          
+      </button>
+      <button class="ql-photo" id="ql-video">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M3 6C2.45 6 2 6.45 2 7V20C2 21.1 2.9 22 4 22H17C17.55 22 18 21.55 18 21C18 20.45 17.55 20 17 20H5C4.45 20 4 19.55 4 19V7C4 6.45 3.55 6 3 6ZM20 2H8C6.9 2 6 2.9 6 4V16C6 17.1 6.9 18 8 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM12 14.5V5.5L17.47 9.6C17.74 9.8 17.74 10.2 17.47 10.4L12 14.5Z" fill="#000000"/>
+          </svg>                 
+      </button>
+      <button class="ql-photo" id="ql-emoji">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM8.5 8C9.33 8 10 8.67 10 9.5C10 10.33 9.33 11 8.5 11C7.67 11 7 10.33 7 9.5C7 8.67 7.67 8 8.5 8ZM16.71 14.72C15.8 16.67 14.04 18 12 18C9.96 18 8.2 16.67 7.29 14.72C7.13 14.39 7.37 14 7.74 14H16.26C16.63 14 16.87 14.39 16.71 14.72ZM15.5 11C14.67 11 14 10.33 14 9.5C14 8.67 14.67 8 15.5 8C16.33 8 17 8.67 17 9.5C17 10.33 16.33 11 15.5 11Z" fill="black"/>
+        </svg>          
+      </button>
+    </span>
+    <!-- <span class="ql-formats">
+      <button class="ql-blockquote"></button>
+      <button class="ql-link"></button>
+      <button class="ql-image"></button>
+      <button class="ql-code-block"></button>
+      <button class="ql-video"></button>
+    </span> -->
+    <span class="ql-formats" style="">
+      <button class="ql-send" id="ql-send">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M3.4 20.4005L20.85 12.9205C21.66 12.5705 21.66 11.4305 20.85 11.0805L3.4 3.60051C2.74 3.31051 2.01 3.80051 2.01 4.51051L2 9.12051C2 9.62051 2.37 10.0505 2.87 10.1105L17 12.0005L2.87 13.8805C2.37 13.9505 2 14.3805 2 14.8805L2.01 19.4905C2.01 20.2005 2.74 20.6905 3.4 20.4005Z" fill="#EB4781"/>
+          </svg>
+      </button>
+    </span>
+  </div>
   <div id="editor"></div>
   <!-- Include the Quill library -->
   <script>
@@ -1278,6 +1377,7 @@
     }
 
     const BlockEmbed = Quill.import('blots/block/embed');
+    const Embed = Quill.import('blots/embed');
 
     class MarkBlot extends BlockEmbed {
       static create(value) {
@@ -1351,50 +1451,195 @@
 
     Quill.register({ 'formats/block-image': BlockImageBlot });
 
-    const addButtonShortcut = (quill) => {
-      const shortcuts = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11.0001 21H10.0001L11.0001 14H7.50011C6.92011 14 6.93011 13.68 7.12011 13.34C7.31011 13 7.17011 13.26 7.19011 13.22C8.48011 10.94 10.4201 7.54 13.0001 3H14.0001L13.0001 10H16.5001C16.9901 10 17.0601 10.33 16.9701 10.51L16.9001 10.66C12.9601 17.55 11.0001 21 11.0001 21Z" fill="black"/>
-        </svg>
-        `;
-      const button = new QuillToolbarButton({
-          icon: `${shortcuts}`
-        })
-
-        button.onClick = function(quill) {
-          postMessage({ 
-            type: "mark",
-          })
+    class EmojiBlot extends Embed {
+      static create(value) {
+        let node = super.create();
+        if (typeof value === 'object') {
+          EmojiBlot.buildSpan(value, node);
+        }
+        return node;
       }
 
-      button.attach(quill)
-    }
-
-    const addButtonAddPhoto = (quill) => {
-      const shortcuts = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V7L15 2ZM6 20V4H14V8H18V20H6ZM16 10V15C16 17.21 14.21 19 12 19C9.79 19 8 17.21 8 15V8.5C8 7.03 9.26 5.86 10.76 6.01C12.06 6.14 13 7.33 13 8.64V15H11V8.5C11 8.22 10.78 8 10.5 8C10.22 8 10 8.22 10 8.5V15C10 16.1 10.9 17 12 17C13.1 17 14 16.1 14 15V10H16Z" fill="black"/>
-        </svg>
-        `;
-      const button = new QuillToolbarButton({
-          icon: `${shortcuts}`
-        })
-
-        button.onClick = function(quill) {
-          postMessage({ 
-            type: "photo",
-          })
+      static value(node) {
+        return {
+          id: node.dataset.name,
+          colons: node.dataset.colons,
+          unified: node.dataset.unified,
+        };
       }
 
-      button.attach(quill)
+      static buildSpan(value, node) {
+        const unicode = _.get(value, 'unified') || _.get(value, 'unicode');
+        const name = _.get(value, 'id') || _.get(value, 'name');
+        node.setAttribute('data-name', name);
+        node.setAttribute('data-colons', value.colons);
+        node.setAttribute('data-unified', unicode);
+        const emojiSpan = createHTMLNode(EmojiBlot.createHTML(value));
+        node.appendChild(emojiSpan);
+      }
+
+      static createHTML(value) {
+        const unicode = _.get(value, 'unified') || _.get(value, 'unicode');
+        const name = _.get(value, 'id') || _.get(value, 'name');
+        return `<span class="ap ap-${name}">${parseUnicode(unicode)}</span>`;
+      }
+
+      static renderCustomWith(customOp) {
+        const { value } = customOp.insert;
+        if (!value) return '';
+        return EmojiBlot.createHTML(value);
+      }
     }
+
+    EmojiBlot.blotName = 'emoji';
+    EmojiBlot.className = 'ql-emojiblot';
+    EmojiBlot.tagName = 'span';
+    EmojiBlot.emojiClass = 'ap';
+
+    Quill.register({ 'formats/emoji': EmojiBlot });
+
+    class BlockVideoBlot extends BlockEmbed {
+      static create(value) {
+        let node = super.create();
+        node.classList.add('block-image');
+
+        const containerHeight = 120;
+        const width = _.get(value, 'width', containerHeight);
+        const height = _.get(value, 'height', containerHeight);
+        const src = _.get(value, 'src');
+        const id = _.get(value, 'id');
+        const name = _.get(value, 'name');
+        node.setAttribute('id', id);
+        node.setAttribute('name', name);
+        node.setAttribute('src', src);
+        node.setAttribute('width', width);
+        node.setAttribute('height', height);
+
+        const child = createHTMLNode(BlockVideoBlot.createHTML(value, { height: containerHeight }));
+        node.style.height = `${containerHeight}px`;
+        node.style.width = `${Math.ceil((width / height) * containerHeight)}px`;
+        node.appendChild(child);
+
+        return node;
+      }
+
+      static value(node) {
+        return {
+          src: node.getAttribute('src'),
+          width: node.getAttribute('width'),
+          height: node.getAttribute('height'),
+          id: node.getAttribute('id'),
+          name: node.getAttribute('name'),
+        };
+      }
+
+      static formats(node) {
+        // We still need to report unregistered embed formats
+        let format = {};
+        if (node.hasAttribute('height')) {
+          format.height = node.getAttribute('height');
+        }
+        if (node.hasAttribute('width')) {
+          format.width = node.getAttribute('width');
+        }
+        if (node.hasAttribute('id')) {
+          format.id = node.getAttribute('id');
+        }
+        if (node.hasAttribute('name')) {
+          format.name = node.getAttribute('name');
+        }
+        format.controls = true;
+        return format;
+      }
+
+      format(name, value) {
+        // Handle unregistered embed formats
+        this.domNode.setAttribute('controls', true);
+        if (['height', 'width', 'id', 'name'].includes(name)) {
+          if (value) {
+            this.domNode.setAttribute(name, value);
+          } else {
+            this.domNode.removeAttribute(name, value);
+          }
+        } else {
+          super.format(name, value);
+        }
+      }
+
+      static createHTML(value, options) {
+        const { width, height, id, src, name } = value;
+        const size = projectSize({ width, height }, { height: _.get(options, 'height', 164) });
+        const sizeStyle = `width: ${size.width}px; height:${size.height}px;`;
+
+        const wrapperStyle = `${sizeStyle} position: relative; overflow: hidden; background: #FFFFFF;border: 1px solid #BFCDD9; border-radius: 8px; display: inline-block;`;
+
+        return `
+          <a class="glightbox" href="${src}" data-title="${name}" style="${wrapperStyle}">
+            <video id="${id}" src="${src}" controls allowfullscreen frameborder="0" style="${sizeStyle} position: absolute; left: 0; top: 0;border-radius: 8px; object-fit: cover;"/>
+          </a>
+        `;
+      }
+
+      static renderCustomWith(customOp) {
+        const { value } = customOp.insert;
+        if (!value) return '';
+        Glightbox.apply();
+        const { id } = value;
+        return `<div id="${id}" style="position: relative;">
+          ${BlockVideoBlot.createHTML(value, { height: 164 })}
+        </div>`;
+      }
+    }
+
+    BlockVideoBlot.blotName = 'block-video';
+    BlockVideoBlot.className = 'block-video';
+    BlockVideoBlot.tagName = 'div';
+
+    Quill.register({ 'formats/block-video': BlockVideoBlot });
+
+    document.getElementById("ql-shortcut").addEventListener("click", function() {
+      postMessage({ 
+        type: "mark",
+      })
+    });
+
+    document.getElementById("ql-photo").addEventListener("click", function() {
+      postMessage({ 
+        type: "photo",
+      })
+    });
+
+    document.getElementById("ql-video").addEventListener("click", function() {
+      postMessage({ 
+        type: "video",
+      })
+    });
+
+    document.getElementById("ql-send").addEventListener("click", function() {
+      postMessage({ 
+        type: "send",
+      })
+    });
+
+    document.getElementById("ql-emoji").addEventListener("click", function() {
+      postMessage({ 
+        type: "emoji",
+      })
+    });
+
+   
 
     const postMessage = (message) => {
       window.ReactNativeWebView.postMessage(JSON.stringify(message))
     }
 
 
-    const quill = new Quill('#editor', window.options)
+    const quill = new Quill('#editor', {
+      placeholder: 'Type text...',
+      modules: { toolbar: '#toolbar' },
+      theme: 'snow'
+    });
 
-    
 
     quill.on('text-change', function(delta, oldDelta, source) {
 
@@ -1409,8 +1654,7 @@
       postMessage(message)
     });
 
-    addButtonShortcut(quill);
-    addButtonAddPhoto(quill);
+ 
 
     const onMessage = (data) => {
       try {
@@ -1440,29 +1684,63 @@
         }
         if(json.type === 'dispatch') {
           const message = json?.data;
-          if(message?.type === 'mark') {
+          if(_.get(message, 'type') === 'mark') {
             // if (!_.find(quill.getContents().ops, (item) => _.get(item, 'insert.mark') === mark)) {
               let range = quill.getSelection(true);
-              quill.insertEmbed(0, 'mark', message?.data, 'user');
+              quill.insertEmbed(0, 'mark', _.get(message, 'data'), 'user');
               quill.setSelection(range.index + 1, 'silent');
             // }
             
             return;
           }
 
-          if(message?.type ==='photo') {
+          if(_.get(message, 'type') ==='photo') {
             const index = (quill.getSelection() || {}).index || quill.getLength();
             quill.insertEmbed(
               index,
               'block-image',
               {
-                src: message?.data,
-                id: 'img'
+                src: _.get(message, 'data'),
+                id: 'img',
+                width: _.get(message, 'width'),
+                height: _.get(message, 'height'),
+                name: _.get(message, 'fileName'),
+                alt: _.get(message, 'fileName'),
               },
               'user'
             );
             quill.insertText(index + 1, '\u00a0', 'user');
             quill.setSelection(index + 2);
+            return;
+          }
+
+
+          if(_.get(message, 'type') ==='video') {
+            const index = (quill.getSelection() || {}).index || quill.getLength();
+            quill.insertEmbed(
+              index,
+              'block-video',
+              {
+                src: _.get(message, 'data'),
+                id: 'video',
+                name: _.get(message, 'fileName'),
+                alt: _.get(message, 'fileName'),
+              },
+              'user'
+            );
+            quill.insertText(index + 1, '\u00a0', 'user');
+            quill.setSelection(index + 2);
+            return;
+          }
+
+          if(_.get(message, 'type') === 'emoji') {
+            const colons = _.get(message, 'data.colons');
+            if (colons) {
+             
+              let range = quill.getSelection(true);
+              quill.insertEmbed(range.index, 'emoji', _.get(message, 'data'), 'user');
+              setTimeout(() => quill.setSelection(range.index + 1), 0);
+            }
           }
         }
 

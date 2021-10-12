@@ -59,7 +59,9 @@
     "test": "jest",
     "config-splash-ios": "configure-splash-screen -p 'ios' -b '#EB4781' -i '../../modules/unitz-assets/User/splash_screen.png'",
     "config-splash-android": "configure-splash-screen -p 'android' --status-bar-translucent --status-bar-background-color '#EB4781' -b '#EB4781' -i '../../modules/unitz-assets/User/splash_screen.png'",
-    "config-splash": "configure-splash-screen --status-bar-translucent --status-bar-background-color '#EB4781' -b '#EB4781' -i '../../modules/unitz-assets/User/splash_screen.png'"
+    "config-splash": "configure-splash-screen --status-bar-translucent --status-bar-background-color '#EB4781' -b '#EB4781' -i '../../modules/unitz-assets/User/splash_screen.png'",
+    "config-quill": "cp './quill.html' './android/app/src/main/assets/'"
+  
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",
@@ -193,7 +195,8 @@
     "react-native-video-controls": "^2.8.1",
     "react-native-video": "^5.1.1",
     "react-native-popover-view": "^4.1.0",
-    "quill-delta-to-html":"^0.12.0"
+    "quill-delta-to-html":"^0.12.0",
+    "emoji-mart-native": "^0.6.2-beta"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

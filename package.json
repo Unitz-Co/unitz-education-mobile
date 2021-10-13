@@ -49,7 +49,7 @@
     "install:android": "adb install ./android/app/build/outputs/apk/release/app-release.apk",
     "install:ios": "ideviceinstaller -i ./ios/builds/outputs/unitzeducationmobile.ipa",
     "postversion": "react-native-version --never-amend",
-    "postinstall": "yarn nuke:modules && patch-package && yarn prepare && npx jetify",
+    "postinstall": "yarn nuke:modules && patch-package && yarn prepare && npx jetify && yarn config-quill",
     "postinstall:ignore": "patch-package",
     "lint": "eslint ./",
     "lint-fix": "eslint ./ --fix",

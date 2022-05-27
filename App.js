@@ -36,22 +36,29 @@ import AlertProvider from '@uz/unitz-providers/AlertProvider';
 import MessageProvider from '@uz/unitz-providers/MessageProvider';
 import AppStripeProvider from '@uz/unitz-providers/AppStripeProvider';
 import AppCalendarProvider from '@uz/unitz-providers/AppCalendarProvider';
+import LoadingProvider from '@uz/unitz-providers/LoadingProvider';
 
 import * as Sentry from '@sentry/react-native';
+import { LogBox } from 'react-native';
 
 Sentry.init({
   dsn: 'https://c4e7ac15a30b41f9a6e0b32ebcc6d99c@o946942.ingest.sentry.io/5944687',
 });
+
+LogBox.ignoreAllLogs();
 
 const App = CodePushProvider(
   () => (
     <Providers
       providers={[
         RefProvider,
-        I18nProvider,
+        LoadingProvider,
+        AlertProvider,
+        MessageProvider,
         AppConfigProvider,
         TestProvider,
         ValidateProvider,
+        I18nProvider,
         LoadableProvider,
         AuthProvider,
         PaymentProvider,
@@ -63,8 +70,6 @@ const App = CodePushProvider(
         SafeAreaProvider,
         LayoutProvider,
         UserProvider,
-        AlertProvider,
-        MessageProvider,
         AppStripeProvider,
         AppCalendarProvider,
       ]}

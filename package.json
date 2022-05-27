@@ -57,11 +57,10 @@
     "precommit": "lint-staged",
     "jetify": "npx jetify",
     "test": "jest",
-    "config-splash-ios": "configure-splash-screen -p 'ios' -b '#EB4781' -i '../../modules/unitz-assets/User/splash_screen.png'",
-    "config-splash-android": "configure-splash-screen -p 'android' --status-bar-translucent --status-bar-background-color '#EB4781' -b '#EB4781' -i '../../modules/unitz-assets/User/splash_screen.png'",
-    "config-splash": "configure-splash-screen --status-bar-translucent --status-bar-background-color '#EB4781' -b '#EB4781' -i '../../modules/unitz-assets/User/splash_screen.png'",
+    "config-splash-ios": "configure-splash-screen -p 'ios' -b '#2EB2AA' -i '../../modules/unitz-assets/User/splash_user.png'",
+    "config-splash-android": "configure-splash-screen -p 'android' --status-bar-translucent --status-bar-background-color '#2EB2AA' -b '#2EB2AA' -i '../../modules/unitz-assets/User/splash_user.png'",
+    "config-splash": "configure-splash-screen --status-bar-translucent --status-bar-background-color '#2EB2AA' -b '#2EB2AA' -i '../../modules/unitz-assets/User/splash_user.png'",
     "config-quill": "cp './quill.html' './android/app/src/main/assets/'"
-  
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",
@@ -195,8 +194,14 @@
     "react-native-video-controls": "^2.8.1",
     "react-native-video": "^5.1.1",
     "react-native-popover-view": "^4.1.0",
-    "quill-delta-to-html":"^0.12.0",
-    "emoji-mart-native": "^0.6.2-beta"
+    "quill-delta-to-html": "^0.12.0",
+    "emoji-mart-native": "^0.6.2-beta",
+    "react-native-callkeep": "^4.3.1",
+    "uuid-random": "^1.3.2",
+    "react-native-voip-push-notification": "^3.3.0",
+    "react-native-background-downloader": "^2.3.4",
+    "react-native-pdf": "^6.4.0",
+    "react-native-blob-util": "^0.13.18"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
